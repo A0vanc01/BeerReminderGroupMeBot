@@ -19,20 +19,16 @@ def webhook():
 
     log('Received {}'.format(data))
 
-
-
-    d = datetime.date(datetime.datetime.now())
-    next_Sunday = next_day(d, 6) # 0 = Monday, 1=Tuesday, 2=Wednesday...
-    print(next_Sunday)
-   
+    d = datetime.datetime.now()
+    next_Sunday = next_weekday(d, 6) # 0 = Monday, 1=Tuesday, 2=Wednesday...
 
     msg = '{}, you volunteered to get beer on the "{}".'.format(data['name'], next_Sunday)
     send_message(msg)
 
     return "ok", 200
 
-def next_day(d, day):
-    days_ahead = day - d.day()
+def next_weekday(d, weekday):
+    days_ahead = weekday - d.weekday()
     if days_ahead <= 0: # Target day already happened this week
         days_ahead += 7
     return d + datetime.timedelta(days_ahead)
