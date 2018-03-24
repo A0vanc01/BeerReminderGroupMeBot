@@ -19,17 +19,26 @@ def webhook():
 
     log('Received {}'.format(data))
 
-    dateOfBeer = datetime.datetime.now().time()
+
+
+    d = datetime.date(datetime.datetime.now())
+    next_Sunday = next_day(d, 6) # 0 = Monday, 1=Tuesday, 2=Wednesday...
+    print(next_Sunday)
    
 
-    msg = '{}, you volunteered to get beer on the "{}".'.format(data['name'], dateOfBeer)
+    msg = '{}, you volunteered to get beer on the "{}".'.format(data['name'], next_Sunday)
     send_message(msg)
 
     return "ok", 200
 
+def next_day(d, day):
+    days_ahead = day - d.day()
+    if days_ahead <= 0: # Target day already happened this week
+        days_ahead += 7
+    return d + datetime.timedelta(days_ahead)
+
 def send_message(msg):
     url  = 'https://api.groupme.com/v3/bots/post'
-    #url = 'https://web.groupme.com/chats'
 
     data = {
         'bot_id' : os.getenv('GROUPME_BOT_ID'),
