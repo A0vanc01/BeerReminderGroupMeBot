@@ -2,7 +2,7 @@ import os
 import sys
 import json
 import time
-from datetime import date
+from datetime import date, datetime
 
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -20,7 +20,7 @@ def webhook():
 
     log('Received {}'.format(data))
 
-    d = datetime.datetime.now()
+    d = datetime.now()
     #d = date.today.isoformat()
 
     next_Sunday = next_weekday(d, 6) # 0 = Monday, 1=Tuesday, 2=Wednesday...
