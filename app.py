@@ -32,7 +32,7 @@ def webhook():
        (ID SERIAL PRIMARY KEY  NOT NULL,
        NAME            TEXT    NOT NULL,
        DATE_ENTERED    TIMESTAMP DEFAULT NULL,
-       DATE_REQUIRED   DATE    NOT NULL''')
+       DATE_REQUIRED   DATE    NOT NULL)''')
 
     d = datetime.datetime.now()
     #d = date.today.isoformat()
