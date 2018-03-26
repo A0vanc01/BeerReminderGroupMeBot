@@ -29,9 +29,9 @@ def webhook():
 
     cur = conn.cursor()
     cur.execute('''CREATE TABLE IF NOT EXISTS VOLUNTEER
-       (ID INT PRIMARY KEY    NOT NULL,
+       (ID SERIAL PRIMARY KEY  NOT NULL,
        NAME            TEXT    NOT NULL,
-       DATE_ENTERED    DATE    NOT NULL,
+       DATE_ENTERED    TIMESTAMP DEFAULT NULL,
        DATE_REQUIRED   DATE    NOT NULL;''')
 
     d = datetime.datetime.now()
@@ -40,7 +40,7 @@ def webhook():
     next_Sunday = next_weekday(d, 6) # 0 = Monday, 1=Tuesday, 2=Wednesday...
 
     conn.execute('''INSERT INTO VOLUNTEER (NAME, DATE_ENTERED, DATE_REQUIRED)
-                 VALUES ({}, {}, {}'''.format(data['name'],d , next_Sunday.date()))
+                 VALUES ({}, {}, {})'''.format(data['name'],d , next_Sunday.date()))
     
 
     msg = '{}, you volunteered to get beer on the {}.  I will try to remind you.'.format(data['name'], next_Sunday.date())
