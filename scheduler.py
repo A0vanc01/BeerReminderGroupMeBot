@@ -24,7 +24,7 @@ if __name__=='__main__':
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     onlyHasOneRow = False
     cur = conn.cursor()
-    cur.execute('''SELECT * FROM VOLUNTEER''')
+    cur.execute("SELECT * FROM VOLUNTEER")
     rows = cur.fetchall()
     rowsize = 0
     print("\nShow me the databases:\n")
@@ -42,7 +42,7 @@ if __name__=='__main__':
     if(rowsize>3):
         msg = 'Holy crap you guys are dicks all volunteering to try to screw over this bot I wrote.'
         send_message(msg)
-        cur.execute('''SELECT * FROM VOLUNTEER ORDER BY ID DESC LIMIT 1''')
+        cur.execute("SELECT * FROM VOLUNTEER ORDER BY ID DESC LIMIT 1")
         row = cur.fetchone()
         msg = 'Well @{} was the last person to spam the bot, so I guess he''s bringing beer!!!!\n=P'.format(row['name'])
         send_message(msg)
