@@ -29,23 +29,21 @@ def webhook():
 
     cur = conn.cursor()
     cur.execute("""CREATE TABLE IF NOT EXISTS VOLUNTEER
-       (ID SERIAL PRIMARY KEY  NOT NULL,
-       NAME            TEXT    NOT NULL,
-       DATE_ENTERED    TIMESTAMP DEFAULT NULL,
-       DATE_REQUIRED   DATE    NOT NULL)""")
-
-
+    (ID SERIAL PRIMARY KEY  NOT NULL,
+    NAME            TEXT    NOT NULL,
+    DATE_ENTERED    TIMESTAMP DEFAULT NULL,
+    DATE_REQUIRED   DATE    NOT NULL)""")
 
     d = datetime.datetime.now()
-    #d = date.today.isoformat()
 
     next_Sunday = next_weekday(d, 6) # 0 = Monday, 1=Tuesday, 2=Wednesday...
+    cur.execute("""
+    INSERT INTO some_table (an_int, a_date, another_date, a_string)
+    VALUES (%(str)s, %(timestamp)s, %(date)s);
+    """,
+    {'str': data['name'], 'datetime':d , 'date': next_Sunday.date()})
 
-    cur.execute("""INSERT INTO VOLUNTEER (NAME, DATE_ENTERED, DATE_REQUIRED)
-                 VALUES (?, ?, ?)""", (data['name'], d, next_Sunday.date()))
-
-       
-
+    #cur.execute("""INSERT INTO VOLUNTEER (NAME, DATE_ENTERED, DATE_REQUIRED) VALUES (?, ?, ?)""", (data['name'], d, next_Sunday.date()))
     msg = '{}, you volunteered to get beer on the {}.  I will try to remind you.'.format(data['name'], next_Sunday.date())
     send_message(msg)
     
