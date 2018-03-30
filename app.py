@@ -39,7 +39,7 @@ def webhook():
     next_Sunday = next_weekday(d, 6) # 0 = Monday, 1=Tuesday, 2=Wednesday...
     cur.execute("""
     INSERT INTO VOLUNTEER (NAME, DATE_ENTERED, DATE_REQUIRED)
-    VALUES (%(str)s, %(timestamp)s, %(date)s);
+    VALUES (%(str)s, %(date)s, %(date)s);
     """,
     {'str': data['name'], 'datetime':d , 'date': next_Sunday.date()})
 
