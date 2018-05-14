@@ -10,9 +10,9 @@ from groupme.polls import Poll, PollOption, PollHelper
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-app = Flask(__name__)
-app.logger.addHandler(logging.StreamHandler(sys.stdout))
-app.logger.setLevel(logging.DEBUG)
+application = Flask(__name__)
+application.logger.addHandler(logging.StreamHandler(sys.stdout))
+application.logger.setLevel(logging.DEBUG)
 
 GROUPME_API_URL = 'https://api.groupme.com/v3/bots/post'
 GROUPME_BOT_ID = os.getenv('GROUPME_BOT_ID')
@@ -22,14 +22,14 @@ poll_helper = PollHelper(GROUPME_ACCESS_TOKEN)
 
 @app.route('/')
 def hello_world():
-    app.logger.debug('Hello, World!')
+    application.logger.debug('Hello, World!')
     return 'Hello, World!'
 
 
 @app.route('/webhook/', methods=['POST'])
 def webhook():
     data = request.get_json()
-    app.logger.debug('Received: ' + str(data))
+    application.logger.debug('Received: ' + str(data))
     return handle_message(data)
 
 def handle_message(message):
@@ -40,13 +40,13 @@ def handle_message(message):
     for attachment in message['attachments']:
         if attachment['type'] == 'poll':
             group_id = message['group_id']
-            app.logger.debug('I found a poll')
+            application.logger.debug('I found a poll')
             poll: Poll = poll_helper.get_poll(group_id, attachment['poll_id'])
             send_message(f"That poll's title is {poll.subject}")
             my_vote: PollOption = random.choice(poll.options)
             resp = poll_helper.vote(group_id, poll, my_vote)
             send_message(f'I pick "{my_vote.title}"')
-            app.logger.debug(resp)
+            application.logger.debug(resp)
             return 'OK', 200
 
     send_message('Hello, ' + message['name'])
@@ -58,10 +58,10 @@ def send_message(message):
         'bot_id' : GROUPME_BOT_ID,
         'text' : message,
     }
-    app.logger.debug('Sending: ' + str(data))
+    application.logger.debug('Sending: ' + str(data))
     request = Request(GROUPME_API_URL, urlencode(data).encode())
     urlopen(request).read().decode()
 
 
 if __name__ == '__main__':  
-    app.run()
+    application.run()
