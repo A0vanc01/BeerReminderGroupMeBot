@@ -58,9 +58,9 @@ def webhook():
 
 def handle_message(message) -> bool:
 
-   poll_found = False
+   pollFound = False
     
-    for attachment in message['attachments']:
+   for attachment in message['attachments']:
         if attachment['type'] == 'poll':
             group_id = message['group_id']
             app.logger.debug('I found a poll')
@@ -70,9 +70,9 @@ def handle_message(message) -> bool:
             resp = poll_helper.vote(group_id, poll, my_vote)
             send_message(f'I pick "{my_vote.title}"')
             app.logger.debug(resp)
-            poll_found = True
+            pollFound = True
     send_message('Hello, ' + message['name'])
-    return poll_found
+    return pollFound
 
 def next_weekday(d, weekday):
     days_ahead = weekday - d.weekday()
