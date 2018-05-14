@@ -58,9 +58,7 @@ def webhook():
 
 def handle_message(message) -> bool:
 
-    if attachment['type'] != 'poll':
-        # Don't process bot messages for now
-        return False
+   poll_found = False
     
     for attachment in message['attachments']:
         if attachment['type'] == 'poll':
@@ -72,9 +70,9 @@ def handle_message(message) -> bool:
             resp = poll_helper.vote(group_id, poll, my_vote)
             send_message(f'I pick "{my_vote.title}"')
             app.logger.debug(resp)
-
+            poll_found = True
     send_message('Hello, ' + message['name'])
-    return True
+    return poll_found
 
 def next_weekday(d, weekday):
     days_ahead = weekday - d.weekday()
