@@ -20,13 +20,13 @@ GROUPME_ACCESS_TOKEN = os.getenv('GROUPME_ACCESS_TOKEN')
 
 poll_helper = PollHelper(GROUPME_ACCESS_TOKEN)
 
-@app.route('/')
+@application.route('/')
 def hello_world():
     application.logger.debug('Hello, World!')
     return 'Hello, World!'
 
 
-@app.route('/webhook/', methods=['POST'])
+@application.route('/webhook/', methods=['POST'])
 def webhook():
     data = request.get_json()
     application.logger.debug('Received: ' + str(data))
