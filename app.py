@@ -28,7 +28,7 @@ poll_helper = PollHelper(GROUPME_ACCESS_TOKEN)
 @application.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
-    app.logger.debug('Received: ' + str(data))
+    application.logger.debug('Received: ' + str(data))
     return handle_message(data)
 
 #def webhook():
@@ -94,7 +94,7 @@ def send_message(message):
         'bot_id' : GROUPME_BOT_ID,
         'text' : message,
     }
-    #app.logger.debug('Sending: ' + str(data))
+    application.logger.debug('Sending: ' + str(data))
     request = Request(GROUPME_API_URL, urlencode(data).encode())
     urlopen(request).read().decode()
 
