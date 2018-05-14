@@ -58,9 +58,9 @@ def webhook():
 
 def handle_message(message) -> bool:
 
-   pollFound = False
+    pollFound = False
     
-   for attachment in message['attachments']:
+    for attachment in message['attachments']:
         if attachment['type'] == 'poll':
             group_id = message['group_id']
             app.logger.debug('I found a poll')
