@@ -28,33 +28,38 @@ poll_helper = PollHelper(GROUPME_ACCESS_TOKEN)
 @application.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
-    log(data)
+    app.logger.debug('Received: ' + str(data))
+    return handle_message(data)
 
-    if (handle_message(data)):
-        return "ok poll response", 200
+#def webhook():
+#    data = request.get_json()
+#    log(data)
 
-    if data['sender_type'] == 'bot' or "beer" not in data['text']:# != "/beer":
-       return "ok not beer response", 200
+#    if (handle_message(data)):
+#        return "ok poll response", 200
 
-    log('Received {}'.format(data))
+#    if data['sender_type'] == 'bot' or "beer" not in data['text']:# != "/beer":
+#       return "ok not beer response", 200
+
+#    log('Received {}'.format(data))
     
     #Database check
-    DATABASE_URL = os.environ['DATABASE_URL']
+#    DATABASE_URL = os.environ['DATABASE_URL']
 
-    d = datetime.datetime.now()
+#    d = datetime.datetime.now()
 
-    next_Sunday = next_weekday(d, 6)
+#    next_Sunday = next_weekday(d, 6)
 
-    msg = '{}, you volunteered to get beer on the {}.  I will try to remind you.'.format(data['name'], next_Sunday.date())
-    send_message(msg)
+#    msg = '{}, you volunteered to get beer on the {}.  I will try to remind you.'.format(data['name'], next_Sunday.date())
+#    send_message(msg)
     
 
-    testMessage = "\nShow me the databases:\n"
+#    testMessage = "\nShow me the databases:\n"
 
-    msg = 'here is what the db has in it: {},'.format(testMessage)
-    send_message
+#    msg = 'here is what the db has in it: {},'.format(testMessage)
+#    send_message
 
-    return "ok", 200
+#    return "ok", 200
 
 def handle_message(message) -> bool:
 
