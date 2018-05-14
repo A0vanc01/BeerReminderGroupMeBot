@@ -43,50 +43,38 @@ def webhook():
 
     d = datetime.datetime.now()
 
-    next_Sunday = next_weekday(d, 6) # 0 = Monday, 1=Tuesday, 2=Wednesday...
-    # cur.execute("""
-    # INSERT INTO VOLUNTEER (NAME, DATE_ENTERED, DATE_REQUIRED)
-    # VALUES (%(str)s, %(date)s, %(date)s);
-    # """,
-    # {'str': data['name'], 'datetime':d , 'date': next_Sunday.date()})
+    next_Sunday = next_weekday(d, 6)
 
     msg = '{}, you volunteered to get beer on the {}.  I will try to remind you.'.format(data['name'], next_Sunday.date())
     send_message(msg)
     
-    #getting all the stuff in the DB
 
-    # cur.execute("SELECT * FROM VOLUNTEER")
-    # rows = cur.fetchall()
     testMessage = "\nShow me the databases:\n"
-    # for row in rows:
-    #testMessage += "   ", row[0]
+
     msg = 'here is what the db has in it: {},'.format(testMessage)
     send_message
 
-    #conn.commit()
     return "ok", 200
 
 def handle_message(message) -> bool:
 
-    if message['sender_type'] != 'user':
+    if attachment['type'] != 'poll':
         # Don't process bot messages for now
         return False
     
     for attachment in message['attachments']:
         if attachment['type'] == 'poll':
             group_id = message['group_id']
-            #app.logger.debug('I found a poll')
+            app.logger.debug('I found a poll')
             poll: Poll = poll_helper.get_poll(group_id, attachment['poll_id'])
             send_message(f"That poll's title is {poll.subject}")
             my_vote: PollOption = random.choice(poll.options)
             resp = poll_helper.vote(group_id, poll, my_vote)
             send_message(f'I pick "{my_vote.title}"')
-            #app.logger.debug(resp)
-            return True
+            app.logger.debug(resp)
 
     send_message('Hello, ' + message['name'])
-
-    return False
+    return True
 
 def next_weekday(d, weekday):
     days_ahead = weekday - d.weekday()
